@@ -1,0 +1,60 @@
+{
+  "name": "calculator",
+  "version": "1.0.0",
+  "description": "Калькулятор на базе Vite, Vue 3, TailwindCSS и Electron",
+  "author": "Gleb Gorlanov",
+  "private": true,
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "electron": "electron electron/main.cjs",
+    "electron:dev": "nodemon --watch electron --ext js,cjs --exec \"electron electron/main.cjs\"",
+    "electron:build": "electron-builder --win --x64"
+  },
+  "build": {
+    "appId": "com.calculator.one",
+    "productName": "Calculator",
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "directories": {
+      "buildResources": "build"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Calculator"
+    }
+  },
+  "dependencies": {
+    "vue": "^3.5.12"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.4",
+    "autoprefixer": "^10.4.21",
+    "concurrently": "^8.2.2",
+    "electron": "35.1.4",
+    "electron-builder": "^24.9.1",
+    "nodemon": "^3.1.0",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.15",
+    "vite": "^5.4.10",
+    "wait-on": "^7.0.1"
+  }
+}

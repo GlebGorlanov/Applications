@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+    background: transparent !important;
+} 
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100vh;
+
+    overflow: hidden;
+}
+
+* {
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: "DejaVu Sans ExtraLight"; 
+    src: url("/public/font/DejaVu Sans ExtraLight.ttf") format("truetype");
+}
