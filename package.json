@@ -12,7 +12,10 @@
     "preview": "vite preview",
     "electron": "electron electron/main.cjs",
     "electron:dev": "nodemon --watch electron --ext js,cjs --exec \"electron electron/main.cjs\"",
-    "electron:build": "electron-builder --win --x64"
+    "electron:build": "electron-builder --linux AppImage --win --x64 --mac",
+    "electron:build:linux": "electron-builder --linux AppImage",
+    "electron:build:win": "electron-builder --win --x64",
+    "electron:build:mac": "electron-builder --mac"
   },
   "build": {
     "appId": "com.calculator.one",
