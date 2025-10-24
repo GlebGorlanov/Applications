@@ -9,17 +9,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout code
+      - name: 🧩 Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: ⚙️ Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install system dependencies
+      - name: 🧰 Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -36,33 +36,31 @@ jobs:
             fuse \
             libfuse2
 
-      - name: Install npm dependencies
+      - name: 📦 Install npm dependencies
         run: |
           npm install
           chmod +x node_modules/.bin/*
 
-      - name: Build Vite project
+      - name: 🏗️ Build Vite project
         run: |
-          echo "=== Checking vite ==="
-          ls -la node_modules/.bin/vite || echo "vite not found"
-          which vite || echo "vite not in PATH"
-          npm list vite
-          echo "=== Running build ==="
+          echo "=== Running vite build ==="
           npx vite build
 
-      - name: Build Electron AppImage
+      - name: 🧮 Build Electron AppImage
         run: npm run electron:build:linux
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: List build output
+      - name: 🔍 Check build output
         run: |
           echo "=== Listing dist directory ==="
           ls -lah dist/ || true
           echo "=== Searching for AppImage files ==="
-          find . -name "*.AppImage" -type f
+          find dist -name "*.AppImage" -type f || echo "No AppImage found"
 
-      - name: Upload AppImage
+      # Загружаем артефакт ТОЛЬКО если запуск вручную (workflow_dispatch)
+      - name: 💾 Upload artifact for manual runs
+        if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v4
         with:
           name: linux-appimage
@@ -71,11 +69,8 @@ jobs:
             dist/**/*.AppImage
           if-no-files-found: error
 
-      - name: Show build folder contents
-        run: ls -R build || echo "build folder not found"
-
-
-      - name: Upload to Release (if tag)
+      # Публикуем в релиз ТОЛЬКО если пушится тег (v1.0.0 и т.д.)
+      - name: 🚀 Upload to GitHub Release (if tag)
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
@@ -84,3 +79,4 @@ jobs:
             dist/**/*.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
