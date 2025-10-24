@@ -43,7 +43,7 @@ jobs:
         run: npm run build
 
       - name: Build Electron AppImage
-        run: npm run electron:build
+        run: npm run electron:build:linux
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
