@@ -22,7 +22,8 @@
     "productName": "Calculator",
     "files": [
       "dist/**/*",
-      "electron/**/*"
+      "electron/**/*",
+      "build/icon.png"
     ],
     "directories": {
       "buildResources": "build"
@@ -39,7 +40,8 @@
 
     "linux": {
       "target": "AppImage",
-      "icon": "build/icon.png"
+      "icon": "build/icon.png",
+      "category": "Utility"
     },
 
     "nsis": {
