@@ -40,7 +40,7 @@
 
     "linux": {
       "target": "AppImage",
-      "icon": "build/icon.png",
+      "icon": "icon.png",
       "category": "Utility"
     },
 
