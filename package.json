@@ -26,7 +26,8 @@
       "build/icon.png"
     ],
     "directories": {
-      "buildResources": "build"
+      "buildResources": "build",
+      "output": "dist"
     },
     "win": {
       "target": [
