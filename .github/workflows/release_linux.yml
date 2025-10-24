@@ -71,6 +71,10 @@ jobs:
             dist/**/*.AppImage
           if-no-files-found: error
 
+      - name: Show build folder contents
+        run: ls -R build || echo "build folder not found"
+
+
       - name: Upload to Release (if tag)
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
