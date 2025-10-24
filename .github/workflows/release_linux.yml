@@ -37,10 +37,18 @@ jobs:
             libfuse2
 
       - name: Install npm dependencies
-        run: npm install
+        run: |
+          npm install
+          chmod +x node_modules/.bin/*
 
       - name: Build Vite project
-        run: npm run build
+        run: |
+          echo "=== Checking vite ==="
+          ls -la node_modules/.bin/vite || echo "vite not found"
+          which vite || echo "vite not in PATH"
+          npm list vite
+          echo "=== Running build ==="
+          npx vite build
 
       - name: Build Electron AppImage
         run: npm run electron:build:linux
