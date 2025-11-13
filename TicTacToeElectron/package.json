@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "electron": "^37.2.0",
-    "electron-builder": "^24.3.0"
+    "electron-builder": "^24.13.3"
   },
   "build": {
     "appId": "com.glebgorlanov.tictactoe",
@@ -39,9 +39,9 @@
     "linux": {
       "target": ["AppImage", "deb"],
       "category": "Game",
-      "icon": "icons/lin/"
+      "icon": "icons/lin/",
+      "maintainer": "Gleb Gorlanov <gorlanovgleb@gmail.com>"
     },
-
     "mac": {
       "target": "dmg",
       "icon": "icons/mac/icon.icns",
@@ -49,7 +49,7 @@
     }
   },
   "keywords": [],
-  "author": "Gleb Gorlanov",
+  "author": "Gleb Gorlanov <gorlanovgleb@gmail.com>",
   "license": "ISC",
   "description": "Tic-Tac-Toe game built with Electron"
 }
