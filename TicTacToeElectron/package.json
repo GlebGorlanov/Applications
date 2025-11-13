@@ -1,0 +1,51 @@
+{
+  "name": "tic-tac-toe",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --linux --mac",
+    "build:linux": "electron-builder --linux",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac"
+  },
+  "devDependencies": {
+    "electron": "^37.2.0",
+    "electron-builder": "^24.3.0"
+  },
+  "build": {
+    "appId": "com.glebgorlanov.tictactoe",
+    "productName": "Tic-Tac-Toe",
+    "files": [
+      "**/*",
+      "!node_modules/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "icons/win/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "Tic-Tac-Toe",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Game",
+      "icon": "icons/lin/"
+    },
+
+    "mac": {
+      "target": "dmg",
+      "icon": "icons/mac/icon.icns",
+      "category": "public.app-category.games"
+    }
+  },
+  "keywords": [],
+  "author": "Gleb Gorlanov",
+  "license": "ISC",
+  "description": "Tic-Tac-Toe game built with Electron"
+}
