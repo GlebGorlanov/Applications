@@ -2,6 +2,10 @@
   "name": "tic-tac-toe",
   "version": "1.0.0",
   "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GlebGorlanov/TicTacToeElectron.git"
+  },
   "scripts": {
     "start": "electron .",
     "build": "electron-builder --win --linux --mac",
