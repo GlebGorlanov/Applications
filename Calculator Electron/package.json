@@ -2,7 +2,8 @@
   "name": "calculator",
   "version": "1.0.0",
   "description": "Калькулятор на базе Vite, Vue 3, TailwindCSS и Electron",
-  "author": "Gleb Gorlanov",
+  "author": "Gleb Gorlanov <gorlanovgleb@gmail.com>",
+  "homepage": "https://github.com/GlebGorlanov/Applications",
   "private": true,
   "type": "module",
   "main": "electron/main.cjs",
@@ -42,7 +43,8 @@
     "linux": {
       "target": ["AppImage", "deb"],
       "icon": "build/icons",
-      "category": "Utility"
+      "category": "Utility",
+      "maintainer": "Gleb Gorlanov <gorlanovgleb@gmail.com>"
     },
     "mac": {
       "target": "dmg",
