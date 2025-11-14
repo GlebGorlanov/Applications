@@ -12,8 +12,8 @@
     "preview": "vite preview",
     "electron": "electron electron/main.cjs",
     "electron:dev": "nodemon --watch electron --ext js,cjs --exec \"electron electron/main.cjs\"",
-    "electron:build": "electron-builder --linux AppImage --win --x64 --mac",
-    "electron:build:linux": "electron-builder --linux AppImage",
+    "electron:build": "electron-builder --linux --win --x64 --mac",
+    "electron:build:linux": "electron-builder --linux",
     "electron:build:win": "electron-builder --win --x64",
     "electron:build:mac": "electron-builder --mac"
   },
@@ -39,18 +39,15 @@
       ],
       "icon": "icon.ico"
     },
-
     "linux": {
-      "target": ["AppImage", "deb"],
+      "target": "AppImage",
       "icon": "build/icons",
       "category": "Utility"
     },
-
     "mac": {
       "target": "dmg",
       "icon": "build/icon.icns"
     },
-
     "nsis": {
       "oneClick": false,
       "perMachine": false,
