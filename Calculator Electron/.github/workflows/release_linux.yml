@@ -1,13 +1,58 @@
-name: Build Linux AppImage
+name: Build Calculator (All Platforms)
 
 on:
   workflow_dispatch:
   push:
+    branches: [ main ]
+    paths:
+      - 'Calculator/**'
     tags:
-      - 'v*'
+      - 'calc-v*'
 
 jobs:
-  build:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: 🧩 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: 📦 Install dependencies
+        working-directory: ./Calculator
+        run: npm install
+
+      - name: 🏗️ Build Vite project
+        working-directory: ./Calculator
+        run: npm run build
+
+      - name: 🧮 Build Electron for Windows
+        working-directory: ./Calculator
+        run: npm run electron:build:win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 💾 Upload Windows artifact
+        if: github.event_name == 'workflow_dispatch' || !startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@v4
+        with:
+          name: Calculator-Windows
+          path: Calculator/dist/*.exe
+          if-no-files-found: warn
+
+      - name: 🚀 Upload to Release (if tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: Calculator/dist/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-linux:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,47 +81,88 @@ jobs:
             fuse \
             libfuse2
 
-      - name: 📦 Install npm dependencies
+      - name: 📦 Install dependencies
+        working-directory: ./Calculator
         run: |
           npm install
           chmod +x node_modules/.bin/*
 
       - name: 🏗️ Build Vite project
-        run: |
-          echo "=== Running vite build ==="
-          npx vite build
+        working-directory: ./Calculator
+        run: npm run build
 
-      - name: 🧮 Build Electron AppImage
+      - name: 🧮 Build Electron for Linux
+        working-directory: ./Calculator
         run: npm run electron:build:linux
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🔍 Check build output
+        working-directory: ./Calculator
         run: |
           echo "=== Listing dist directory ==="
           ls -lah dist/ || true
           echo "=== Searching for AppImage files ==="
           find dist -name "*.AppImage" -type f || echo "No AppImage found"
 
-      # Загружаем артефакт ТОЛЬКО если запуск вручную (workflow_dispatch)
-      - name: 💾 Upload artifact for manual runs
-        if: github.event_name == 'workflow_dispatch'
+      - name: 💾 Upload Linux artifact
+        if: github.event_name == 'workflow_dispatch' || !startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v4
         with:
-          name: linux-appimage
+          name: Calculator-Linux-AppImage
           path: |
-            dist/*.AppImage
-            dist/**/*.AppImage
-          if-no-files-found: error
+            Calculator/dist/*.AppImage
+            Calculator/dist/**/*.AppImage
+          if-no-files-found: warn
 
-      # Публикуем в релиз ТОЛЬКО если пушится тег (v1.0.0 и т.д.)
-      - name: 🚀 Upload to GitHub Release (if tag)
+      - name: 🚀 Upload to Release (if tag)
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            dist/*.AppImage
-            dist/**/*.AppImage
+            Calculator/dist/*.AppImage
+            Calculator/dist/**/*.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: 🧩 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: 📦 Install dependencies
+        working-directory: ./Calculator
+        run: npm install
+
+      - name: 🏗️ Build Vite project
+        working-directory: ./Calculator
+        run: npm run build
+
+      - name: 🧮 Build Electron for macOS
+        working-directory: ./Calculator
+        run: npm run electron:build:mac
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 💾 Upload macOS artifact
+        if: github.event_name == 'workflow_dispatch' || !startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@v4
+        with:
+          name: Calculator-macOS
+          path: Calculator/dist/*.dmg
+          if-no-files-found: warn
+
+      - name: 🚀 Upload to Release (if tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: Calculator/dist/*.dmg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

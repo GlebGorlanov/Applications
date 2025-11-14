@@ -20,6 +20,7 @@
   "build": {
     "appId": "com.calculator.one",
     "productName": "Calculator",
+    "publish": null,
     "files": [
       "dist/**/*",
       "electron/**/*",
