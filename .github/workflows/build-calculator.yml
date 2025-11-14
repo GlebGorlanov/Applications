@@ -5,7 +5,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'Calculator/**'
+      - 'Calculator Electron/**'
     tags:
       - 'calc-v*'
 
@@ -23,15 +23,15 @@ jobs:
           node-version: 18
 
       - name: 📦 Install dependencies
-        working-directory: ./Calculator
+        working-directory: ./Calculator Electron
         run: npm install
 
       - name: 🏗️ Build Vite project
-        working-directory: ./Calculator
+        working-directory: ./Calculator Electron
         run: npm run build
 
       - name: 🧮 Build Electron for Windows
-        working-directory: ./Calculator
+        working-directory: ./Calculator Electron
         run: npm run electron:build:win
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -41,14 +41,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Calculator-Windows
-          path: Calculator/dist/*.exe
+          path: Calculator Electron/dist/*.exe
           if-no-files-found: warn
 
       - name: 🚀 Upload to Release (if tag)
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          files: Calculator/dist/*.exe
+          files: Calculator Electron/dist/*.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -82,23 +82,23 @@ jobs:
             libfuse2
 
       - name: 📦 Install dependencies
-        working-directory: ./Calculator
+        working-directory: ./Calculator Electron
         run: |
           npm install
           chmod +x node_modules/.bin/*
 
       - name: 🏗️ Build Vite project
-        working-directory: ./Calculator
+        working-directory: ./Calculator Electron
         run: npm run build
 
       - name: 🧮 Build Electron for Linux
-        working-directory: ./Calculator
+        working-directory: ./Calculator Electron
         run: npm run electron:build:linux
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🔍 Check build output
-        working-directory: ./Calculator
+        working-directory: ./Calculator Electron
         run: |
           echo "=== Listing dist directory ==="
           ls -lah dist/ || true
@@ -111,8 +111,8 @@ jobs:
         with:
           name: Calculator-Linux-AppImage
           path: |
-            Calculator/dist/*.AppImage
-            Calculator/dist/**/*.AppImage
+            Calculator Electron/dist/*.AppImage
+            Calculator Electron/dist/**/*.AppImage
           if-no-files-found: warn
 
       - name: 🚀 Upload to Release (if tag)
@@ -120,8 +120,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            Calculator/dist/*.AppImage
-            Calculator/dist/**/*.AppImage
+            Calculator Electron/dist/*.AppImage
+            Calculator Electron/dist/**/*.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -138,15 +138,15 @@ jobs:
           node-version: 18
 
       - name: 📦 Install dependencies
-        working-directory: ./Calculator
+        working-directory: ./Calculator Electron
         run: npm install
 
       - name: 🏗️ Build Vite project
-        working-directory: ./Calculator
+        working-directory: ./Calculator Electron
         run: npm run build
 
       - name: 🧮 Build Electron for macOS
-        working-directory: ./Calculator
+        working-directory: ./Calculator Electron
         run: npm run electron:build:mac
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -156,13 +156,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Calculator-macOS
-          path: Calculator/dist/*.dmg
+          path: Calculator Electron/dist/*.dmg
           if-no-files-found: warn
 
       - name: 🚀 Upload to Release (if tag)
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          files: Calculator/dist/*.dmg
+          files: Calculator Electron/dist/*.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
