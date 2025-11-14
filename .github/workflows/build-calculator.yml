@@ -104,8 +104,10 @@ jobs:
           ls -lah dist/ || true
           echo "=== Searching for AppImage files ==="
           find dist -name "*.AppImage" -type f || echo "No AppImage found"
+          echo "=== Searching for deb files ==="
+          find dist -name "*.deb" -type f || echo "No deb found"
 
-      - name: 💾 Upload Linux artifact
+      - name: 💾 Upload Linux AppImage
         if: github.event_name == 'workflow_dispatch' || !startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v4
         with:
@@ -115,6 +117,16 @@ jobs:
             Calculator Electron/dist/**/*.AppImage
           if-no-files-found: warn
 
+      - name: 💾 Upload Linux deb
+        if: github.event_name == 'workflow_dispatch' || !startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@v4
+        with:
+          name: Calculator-Linux-deb
+          path: |
+            Calculator Electron/dist/*.deb
+            Calculator Electron/dist/**/*.deb
+          if-no-files-found: warn
+
       - name: 🚀 Upload to Release (if tag)
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
@@ -122,6 +134,8 @@ jobs:
           files: |
             Calculator Electron/dist/*.AppImage
             Calculator Electron/dist/**/*.AppImage
+            Calculator Electron/dist/*.deb
+            Calculator Electron/dist/**/*.deb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

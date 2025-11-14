@@ -6,7 +6,7 @@ on:
     tags:
       - 'v*.*.*'
     paths:
-      - 'TicTacToeElectron/**'
+      - 'Tic-Tac-Toe Electron/**'
   workflow_dispatch:
 
 jobs:
@@ -22,14 +22,14 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: TicTacToeElectron/package-lock.json
+          cache-dependency-path: Tic-Tac-Toe Electron/package-lock.json
 
       - name: Install dependencies
-        working-directory: ./TicTacToeElectron
+        working-directory: ./Tic-Tac-Toe Electron
         run: npm ci
 
       - name: Build for Windows
-        working-directory: ./TicTacToeElectron
+        working-directory: ./Tic-Tac-Toe Electron
         run: npm run build:win
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -38,14 +38,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: TicTacToe-Windows
-          path: TicTacToeElectron/dist/*.exe
+          path: Tic-Tac-Toe Electron/dist/*.exe
           if-no-files-found: warn
 
       - name: Upload to GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: TicTacToeElectron/dist/*.exe
+          files: Tic-Tac-Toe Electron/dist/*.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -61,14 +61,14 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: TicTacToeElectron/package-lock.json
+          cache-dependency-path: Tic-Tac-Toe Electron/package-lock.json
 
       - name: Install dependencies
-        working-directory: ./TicTacToeElectron
+        working-directory: ./Tic-Tac-Toe Electron
         run: npm ci
 
       - name: Build for Linux
-        working-directory: ./TicTacToeElectron
+        working-directory: ./Tic-Tac-Toe Electron
         run: npm run build:linux
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -77,14 +77,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: TicTacToe-Linux-AppImage
-          path: TicTacToeElectron/dist/*.AppImage
+          path: Tic-Tac-Toe Electron/dist/*.AppImage
           if-no-files-found: warn
 
       - name: Upload Linux deb package
         uses: actions/upload-artifact@v4
         with:
           name: TicTacToe-Linux-deb
-          path: TicTacToeElectron/dist/*.deb
+          path: Tic-Tac-Toe Electron/dist/*.deb
           if-no-files-found: warn
 
       - name: Upload to GitHub Release
@@ -92,8 +92,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            TicTacToeElectron/dist/*.AppImage
-            TicTacToeElectron/dist/*.deb
+            Tic-Tac-Toe Electron/dist/*.AppImage
+            Tic-Tac-Toe Electron/dist/*.deb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -109,14 +109,14 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: TicTacToeElectron/package-lock.json
+          cache-dependency-path: Tic-Tac-Toe Electron/package-lock.json
 
       - name: Install dependencies
-        working-directory: ./TicTacToeElectron
+        working-directory: ./Tic-Tac-Toe Electron
         run: npm ci
 
       - name: Build for macOS
-        working-directory: ./TicTacToeElectron
+        working-directory: ./Tic-Tac-Toe Electron
         run: npm run build:mac
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -125,13 +125,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: TicTacToe-macOS
-          path: TicTacToeElectron/dist/*.dmg
+          path: Tic-Tac-Toe Electron/dist/*.dmg
           if-no-files-found: warn
 
       - name: Upload to GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: TicTacToeElectron/dist/*.dmg
+          files: Tic-Tac-Toe Electron/dist/*.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
