@@ -79,7 +79,9 @@ jobs:
             libgbm1 \
             libxcb-dri3-0 \
             fuse \
-            libfuse2
+            libfuse2 \
+            fakeroot \
+            dpkg
 
       - name: 📦 Install dependencies
         working-directory: ./Calculator Electron
