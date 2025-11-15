@@ -1,0 +1,30 @@
+name: Развертывание на GitHub Pages
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+  pages: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Настройка Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Установка зависимостей
+        run: npm install
+      - name: Сборка
+        run: npm run build
+      - name: Развертывание
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: dist
+          token: ${{ secrets.GITHUB_TOKEN }}
+          clean: true
+          force: true
+          attempt-limit: 3
