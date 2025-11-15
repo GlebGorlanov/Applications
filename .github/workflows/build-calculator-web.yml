@@ -1,8 +1,8 @@
-name: Calculator Web CI/CD
+name: Calculator Web Build
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main ]
     paths:
       - 'Calculator Web/**'
   pull_request:
@@ -11,27 +11,33 @@ on:
       - 'Calculator Web/**'
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
     
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '18'
     
-    # ВАЖНО: переходим в папку проекта перед npm install
     - name: Install dependencies
       working-directory: ./Calculator Web
-      run: npm install
+      run: npm ci
     
-    - name: Run tests (if any)
+    - name: Lint code
       working-directory: ./Calculator Web
-      run: npm test --if-present
+      run: npm run lint --if-present
     
-    - name: Build project (if needed)
+    - name: Build project
       working-directory: ./Calculator Web
-      run: npm run build --if-present
+      run: npm run build
+    
+    - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./Calculator Web/dist
+        destination_dir: calculator-web
