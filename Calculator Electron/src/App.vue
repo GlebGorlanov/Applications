@@ -1,15 +1,15 @@
 <template>
     <div class="frame w-[100vw] aspect-[1/1.47] rounded-[3vw]">
-      <div class="head leading-[0.5] h-[36px] rounded-t-[3vw]" @mousedown="dragWindow">
-          <div class="turn" @mousedown.stop @click.stop="headButtons('turn')">&#8211;</div>
-          <div class="expand" @mousedown.stop @click.stop="headButtons('expand')">&#9633;</div>
-          <div class="close rounded-tr-[3vw]" @mousedown.stop @click.stop="headButtons('close')">&#215;</div>
+      <div class="head leading-[0.5] h-[36px] rounded-t-[3vw]">
+          <div class="turn" @click="headButtons('turn')">&#8211;</div>
+          <div class="expand" @click="headButtons('expand')">&#9633;</div>
+          <div class="close rounded-tr-[3vw]" @click="headButtons('close')">&#215;</div>
       </div>
 
-        <div class="calculator w-[100%] aspect-[1/1.47] rounded-[3vw]">
-            <Output :arr="arr" :result="result" :windowResult="windowResult" :cursor="cursor" :zero="zero" @getResult="getResult"/>
-            <Buttons @get="get" ref="set"/>
-        </div>
+      <div class="calculator w-[100%] aspect-[1/1.47] rounded-[3vw]">
+          <Output :arr="arr" :result="result" :windowResult="windowResult" :cursor="cursor" :zero="zero" @getResult="getResult"/>
+          <Buttons @get="get" ref="set"/>
+      </div>
     </div>
 </template>
 
@@ -45,146 +45,23 @@
                 end: 0,
                 root: false,    // Флаг метода вычисления корня.
                 dot: false, // Флаг плавающей точки.
-                
-                dragging: false,
-                offsetX: 0,
-                offsetY: 0,
-                isMaximized: false,
-                savedBounds: null,
-                moving: false,
-                /*change*/
+                name: 'WindowControls'
             };
         },
 
   /*-------------------------- Метод вывода результата ---------------------*/
-          mounted() {
-            /*if (window.Neutralino) {
-              Neutralino.init();
-  
-              Neutralino.events.on('windowClose', () => {
-                Neutralino.app.exit();
-              });
-            };*/
-
-            window.addEventListener('mousemove', this.moveWindow);
-            
-            window.addEventListener('mouseup', this.stopDrag);
-
-            if(window.Neutralino) {
-                Neutralino.init();
-            
-                Neutralino.events.on('windowClose', () => {
-                  Neutralino.app.exit();
-                });
-            };
-          },
-
-          beforeUnmount() {
-            window.removeEventListener('mousemove', this.moveWindow);
-            window.removeEventListener('mouseup', this.stopDrag);
-          },
           
           methods: {
 /*----------------------- Метод управления окном ----------------------*/
-
-
-            /*dragWindow() {
-              if (window.Neutralino) {
-                Neutralino.window.beginDrag();
-              };
-            },*/
-
-            dragWindow(e) {
-              if(!window.Neutralino) return;
-            
-              this.dragging = true;
-              this.offsetX = e.screenX;
-              this.offsetY = e.screenY;
-            },
-
-            async moveWindow(e) {
-              if (!this.dragging) return;
-                if (this.moving) return;
-              
-                this.moving = true;
-              
-                const pos = await Neutralino.window.getPosition();
-              
-                const dx = e.screenX - this.offsetX;
-                const dy = e.screenY - this.offsetY;
-              
-                await Neutralino.window.move(
-                  pos.x + dx,
-                  pos.y + dy
-                );
-              
-                this.offsetX = e.screenX;
-                this.offsetY = e.screenY;
-              
-                this.moving = false;
-            },
-
-            stopDrag() {
-              this.dragging = false;
-            },
-
-            async toggleMaximize() {
-            
-              if (!window.Neutralino) return;
-            
-              if (!this.isMaximized) {
-            
-                this.savedBounds = {
-                  size: await Neutralino.window.getSize(),
-                  pos: await Neutralino.window.getPosition()
+            headButtons(txt) {
+                if(txt === 'turn') {
+                  window.electron?.send('window-minimize');
+                } else if(txt === 'expand') {
+                  window.electron?.send('window-maximize');
+                } else {
+                  window.electron?.send('window-close');
                 };
-            
-                const display = await Neutralino.window.getDisplay();
-            
-                await Neutralino.window.move(0, 0);
-            
-                await Neutralino.window.setSize({
-                  width: display.width,
-                  height: display.height
-                });
-            
-                this.isMaximized = true;
-            
-              } else {
-            
-                await Neutralino.window.setSize(
-                  this.savedBounds.size
-                );
-            
-                await Neutralino.window.move(
-                  this.savedBounds.pos.x,
-                  this.savedBounds.pos.y
-                );
-            
-                this.isMaximized = false;
-              }
-            },
-
-            headButtons(type) {
-              console.log('clicked:', type);
-              if (!window.Neutralino) return;
-            
-              switch (type) {
-                case 'turn':
-                  Neutralino.window.minimize()
-                  break
-            
-                case 'expand':
-                  //Neutralino.window.maximize()
-                  this.toggleMaximize();
-                  break
-            
-                case 'close':
-                  Neutralino.app.exit()
-                  break
-              };
-            },
-          
+              },
 
 /*-------------------------- Метод закрытия окна результата ---------------------*/           
             getResult() {
