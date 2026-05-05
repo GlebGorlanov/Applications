@@ -1,7 +1,7 @@
 {
   "name": "calculator",
   "version": "1.0.0",
-  "description": "Калькулятор на базе Vite, Vue 3, TailwindCSS, Electron",
+  "description": "Калькулятор на базе Vite, Vue 3, TailwindCSS и Electron",
   "author": "Gleb Gorlanov",
   "private": true,
   "type": "module",
@@ -13,9 +13,10 @@
     "electron": "electron electron/main.cjs",
     "electron:dev": "nodemon --watch electron --ext js,cjs --exec \"electron electron/main.cjs\"",
     "electron:build": "electron-builder --linux AppImage --win --x64 --mac",
-    "electron:build:linux": "electron-builder --linux AppImage",
-    "electron:build:win": "electron-builder --win --x64",
-    "electron:build:mac": "electron-builder --mac"
+
+    "electron:build:linux": "electron-builder --linux AppImage --publish never",
+    "electron:build:win": "electron-builder --win --x64 --publish never",
+    "electron:build:mac": "electron-builder --mac --publish never"
   },
   "build": {
     "appId": "com.calculator.one",
