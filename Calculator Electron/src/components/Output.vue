@@ -23,7 +23,14 @@
 
 <script>
     import Result from './Result.vue';
-
+    
+    /**
+     * Calculator Convenient
+     * Author: Gleb Gorlanov
+     * Copyright (c) 2026
+     * All rights reserved.
+     */
+     
     export default {
         components: {
             Result,

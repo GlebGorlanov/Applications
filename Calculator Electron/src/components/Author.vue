@@ -1,17 +1,51 @@
 <template>
     <div class="info text-[4.2vw] rounded-[2.5vw]">
-                                                          
-        <ul class="list">
+                                                
+        <ul class="list" v-show="lanRu">
             <li>Приложение <span style="color:rgb(128, 223, 255)">Калькулятор</span></li>
             <li>Разработал:</li>
             <li>Горланов Глеб</li>
             <li>Россия, г.Ярославль</li>
             <li><span style="color:rgb(255, 250, 163)">gorlanovgleb<span style="color:pink">@</span>gmail.com</span></li>
         </ul>
+        
+        <ul class="list" v-show="lanEn">
+            <li>Application <span style="color:rgb(128, 223, 255)">Calculator</span></li>
+            <li>Was developed by:</li>
+            <li>Gleb Gorlanov</li>
+            <li>Russia, Yaroslavl</li>
+            <li><span style="color:rgb(255, 250, 163)">gorlanovgleb<span style="color:pink">@</span>gmail.com</span></li>
+        </ul>
     </div>
 </template>
 
-<script></script>
+<script>
+
+/**
+ * Calculator Convenient
+ * Author: Gleb Gorlanov
+ * Copyright (c) 2026
+ * All rights reserved.
+ */
+ 
+  export default {
+    props: ['ruFlag'],
+    
+    data() {
+      return {
+        lanRu: true,
+        lanEn: false,
+      };
+    },
+    
+    watch: {
+      ruFlag() {
+        this.lanRu =! this.lanRu;
+        this.lanEn =! this.lanEn;
+      },
+    },
+  };
+</script>
 
 <style scoped>
 .info {

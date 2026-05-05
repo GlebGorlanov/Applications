@@ -1,10 +1,18 @@
 <template>
-    <div class="volumeWindow rounded-[3.2vw]">
+    <div class="volumeWindow rounded-[3.2vw]" :style="{width: widthWin}">
         <div class="head">
             <div class="headLeft">
-                <span v-show="back" @click="hideIconsInfo('b')" class="back text-[7.8vw]" :style="{color:color}">&#8592;</span>
+                <span v-show="back" @click="hideIconsInfo('b')" class="back text-[7.5vw]" :style="{color:color}">&#8592;</span>
+
+                <!--<img :src="`/src/assets/${lanFlag}.png`" alt="#" class=" language w-[43%]" @click="changeLanguage" v-show="iconsInfoWindow">-->
+                
+                <img src="\src\assets\ru.png" alt="#" class=" language w-[43%]" @click="changeLanguage" v-show="iconsInfoWindow" v-if="ruFlag">
+                  
+                <img src="\src\assets\en.png" alt="#" class=" language w-[43%]" @click="changeLanguage" v-show="iconsInfoWindow" v-if="enFlag">
             </div>
-            <div class="headCenter"></div>
+            <div class="headCenter">
+              <img src="\src\assets\expand.svg" alt="#" class="expand w-[12%]" v-show="windowManual" @click="expandWindow">
+            </div>
             <div class="headRight">
                 <!------------------------------------------ Элемент закрывания окна -------------------------------------------------->
                 <span @click="hideIconsInfo" class="close text-[10vw]">&#215;</span>
@@ -23,16 +31,17 @@
                     <img src="/src/assets/manual.png" class="w-[68%]">
                     <!--<p>Manual</p>-->
                 </div>
+                
                 <div class="btnInfo rounded-[3vw]" @click="hideIconsInfo('a')">
                     <img src="/src/assets/author.png" class="w-[70%]">
                     <!--<p>Author</p>-->
                 </div>
             </div>
             <!------------------------------------------ Мануал приложения калькулятор -------------------------------------------------->
-            <Manual v-show="windowManual"/>
+            <Manual :ruFlag="ruFlag" v-show="windowManual" :widthManual="widthManual"/>
 
             <!------------------------------------------ Манифест автора -------------------------------------------------->
-            <Author v-show="windowAuthor"/>
+            <Author :ruFlag="ruFlag" v-show="windowAuthor"/>
         </div>
     </div>
 </template>
@@ -40,7 +49,14 @@
 <script>
     import Manual from './Manual.vue';
     import Author from './Author.vue';
-
+    
+    /**
+     * Calculator Convenient
+     * Author: Gleb Gorlanov
+     * Copyright (c) 2026
+     * All rights reserved.
+     */
+     
     export default {
         components: {
             Manual,
@@ -52,12 +68,17 @@
 
         data() {
             return {
-                back: false,
-                value: 5,
-                valueCopy: 0,
-                soundImg: 'dinOn1.svg',
-                time: null,
-                color: 'rgba(48, 49, 27, 1)',
+              back: false,
+              value: 5,
+              valueCopy: 0,
+              soundImg: 'dinOn1.svg',
+              time: null,
+              color: 'rgba(48, 49, 27, 1)',
+              //lanFlag: 'ru',
+              widthManual: true,
+              widthWin: false,
+              ruFlag: true,
+              enFlag: false,
             };
         },
 
@@ -80,6 +101,8 @@
                 if(this.volumeWrapWindow) {
                     this.back = false;
                     clearInterval(this.time);
+                    this.widthWin = '76%';
+                    this.widthManual = true;
                 };
             },
 
@@ -87,18 +110,46 @@
                 if(this.iconsInfoWindow) {
                     this.back = false;
                     clearInterval(this.time);
+                    this.widthWin = '76%';
+                    this.widthManual = true;
                 };
             },
         },
 
         mounted() {
             let value = localStorage.getItem('value');
+            
             if(value) {
                 this.value = JSON.parse(value);
             };
         },
 
-        methods: {
+          methods: {
+            expandWindow() {
+              this.widthWin = this.widthWin === '90%' ? '76%' : '90%';
+              this.widthManual =! this.widthManual;
+
+              this.expand();
+            },
+          
+            changeLanguage() {
+              /*if(this.lanFlag === 'ru') {
+                this.lanFlag = 'en';
+              } else {
+                this.lanFlag = 'ru';
+              };*/
+
+              if (this.ruFlag) {
+                this.enFlag = true;
+                this.ruFlag = false;
+              } else {
+                this.enFlag = false;
+                this.ruFlag = true;
+              };
+              
+              this.changeLang();
+            },
+            
             getImg(f) {
                 return new URL(`/src/assets/${f}`, import.meta.url).href;
             },
@@ -116,15 +167,19 @@
             },
 /*------------------------------- Метод возврата в главное меню --------------------------------------------------------*/
             hideIconsInfo(a) {
-                this.$emit('showVolumeWindow', a);
+              this.$emit('showVolumeWindow', a);
 
-                if(a === 'm' || a === 'a') {
+              if (a === 'm' || a === 'a') {
+                    this.language = false;
                     this.back = true;
                     this.time = setInterval(() => {
                         this.color = this.color === 'rgba(48, 49, 27, 1)'? 'rgba(48, 49, 27, 0.5)': 'rgba(48, 49, 27, 1)';
                     }, 1000);
                 } else {
                     this.back = false;
+                    this.language = true;
+                    this.widthWin = '76%';
+                    this.widthManual = true;
                     clearInterval(this.time);
                 };
             },
@@ -135,6 +190,20 @@
                 audio.autoplay = true;
                 audio.volume = (this.value / 12);
             },
+          
+          changeLang() {
+              let audio = new Audio();
+              audio.src = new URL(`/src/assets/changeLang.mp3`, import.meta.url).href
+              audio.autoplay = true;
+              audio.volume = (this.value / 30);
+          },
+
+          expand() {
+            let audio = new Audio();
+            audio.src = new URL(`/src/assets/expand.mp3`, import.meta.url).href
+            audio.autoplay = true;
+            audio.volume = (this.value / 30);
+          }, 
         },
     };
 </script>
@@ -146,13 +215,13 @@
     display: flex;
     flex-direction: column;
     align-self: center;
-
-    width: 76%;
     aspect-ratio: 1 / 0.7;
-    
+
     border: 1px ridge whitesmoke;
+    
     background: linear-gradient(to top, rgba(114, 114, 114, 0.7) 20%,
     rgba(149, 155, 62, 0.9) 80%);
+    
     backdrop-filter: blur(1px);
 }
 
@@ -184,9 +253,30 @@
 }
 
 .headCenter {
-    flex-basis: 62%;
-    height: 100%;
-    border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-basis: 62%;
+  height: 100%;
+}
+
+.expand {
+  cursor: pointer;
+  margin-top: 4%;
+  
+  box-shadow: 
+    1px 1px 0 rgba(0, 0, 0, 0.5),
+    -1px -1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.expand:hover {
+  width: 13%;
+}
+
+.expand:active {
+  box-shadow: inset -1px -1px 0 rgba(255, 255, 255, 0.3), 
+  inset 1px 1px 0 rgba(70, 70, 70, 0.5);
+  width: 12.5%;
 }
 
 .back {
@@ -194,6 +284,16 @@
     font-weight: 600;
     font-family: 'Candara Light';
     line-height: 0;
+}
+
+.language {
+  cursor: pointer;
+  border: 1px groove rgba(255, 255, 255, 0.5);
+  margin-top: 15%;
+}
+
+.language:hover {
+  border: 1px groove rgba(255, 255, 255, 0.9);
 }
 
 .headRight {
@@ -241,7 +341,7 @@
 
     aspect-ratio: 1 / 1;
     margin: 0 4%;
-    
+
     border: 1px groove  rgb(255, 255, 255, 0.4);
     background: linear-gradient(to bottom, rgba(100, 108, 109, 0.5) 0%,
               rgba(102, 107, 107, 0.8) 0%,rgba(5, 5, 5, 0.9) 52%);

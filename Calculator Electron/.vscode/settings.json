@@ -1,3 +1,4 @@
 {
-  "editor.hover.enabled": true
+  "editor.hover.enabled": "on",
+  "git.ignoreLimitWarning": true
 }

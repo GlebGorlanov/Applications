@@ -18,6 +18,14 @@
 </template>
 
 <script>
+
+/**
+ * Calculator Convenient
+ * Author: Gleb Gorlanov
+ * Copyright (c) 2026
+ * All rights reserved.
+ */
+ 
   export default {
       props: ['result', 'windowResult'],
       emits: ['getResult'],

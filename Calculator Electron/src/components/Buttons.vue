@@ -24,6 +24,13 @@
 <script>
     import VolumeWindow from './VolumeWindow.vue';
 
+    /**
+     * Calculator Convenient
+     * Author: Gleb Gorlanov
+     * Copyright (c) 2026
+     * All rights reserved.
+     */
+     
     export default {
         components: {
             VolumeWindow,
