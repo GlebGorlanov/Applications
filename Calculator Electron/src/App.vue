@@ -52,6 +52,7 @@
                 isMaximized: false,
                 savedBounds: null,
                 moving: false,
+                /*change*/
             };
         },
 
