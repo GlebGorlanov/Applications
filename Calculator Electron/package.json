@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Калькулятор на базе Vite, Vue 3, TailwindCSS и Electron",
   "author": "Gleb Gorlanov",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GlebGorlanov/Applications.git"
+  },
   "private": true,
   "type": "module",
   "main": "electron/main.cjs",
